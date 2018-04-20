@@ -1,0 +1,83 @@
+<a href="users/<%=@user.id%>/edit"> Edit My Profile </a>
+<h1> <%= @user.first_name %> </h1>
+<% if flash[:messages] %>
+    <% flash[:messages].each do |msg| %>
+        <p> <%= msg %> </p>
+    <% end %>
+<% end %>
+<h3> Here are some of the events in your state: </h3>
+<table>
+    <tr>
+        <th> Name </th>
+        <th> Date </th>
+        <th> Location </th>
+        <th> State </th>
+        <th> Host </th>
+        <th> Action/Status </th>
+    </tr>
+    <% @events_in_state.each do |event| %>
+    <tr>
+        <td> <a href="/events/<%=event.id%>"> <%= event.name %> </a> </td>
+        <td> <%= event.date.strftime("%B %d %Y") %> </td>
+        <td> <%= event.location %> </td>
+        <td> <%= event.state %> </td>
+        <td> <%= event.first_name %> </td> 
+        <td> 
+            <% if event.user_id != @user.id %>
+                <% if Signup.where(event: event, user: @user).length > 0 %>
+                    You already joined <a href="/cancel/ <%= event.id %>"> Cancel </a>
+                <% else %>
+                    <a href="/joins/<%= event.id %>"> Join </a>
+                <% end %>
+            <% else %>
+                <a href="/events/<%= event.id%>">Edit </a>
+                <a href="/events/<%= event.id%>" data-method="delete">Delete</a> 
+            <%end%>
+        </td>
+    </tr>
+    <% end %>
+</table>
+
+<h3> Here are some of the events in other states: </h3>
+<table>
+    <tr>
+        <th> Name </th>
+        <th> Date </th>
+        <th> Location </th>
+        <th> State </th>
+        <th> Host </th>
+        <th> Action/Status </th>
+    </tr>
+    <% @events_out_state.each do |event| %>
+    <tr>
+        <td> <a href="/events/<%=event.id%>"> <%= event.name %> </a> </td>
+        <td> <%= event.date.strftime("%B %d %Y") %> </td>
+        <td> <%= event.location %> </td>
+        <td> <%= event.state %> </td>
+        <td> <%= event.first_name %> </td> 
+        <td> 
+            <% if event.user_id != @user.id %>
+                <% if Signup.where(event: event, user: @user).length > 0 %>
+                    You already joined <a href="/cancel/ <%= event.id %>"> Cancel </a>
+                <% else %>
+                    <a href="/joins/<%= event.id %>"> Join </a>
+                <% end %>
+            <% else %>
+                <a href="/events/<%= event.id%>">Edit </a>
+                <a href="/events/<%= event.id%>" data-method="delete">Delete</a> 
+            <% end %>
+        </td>
+    </tr>
+    <% end %>
+</table>
+
+
+<h3> Add Event </h3>
+<form action="/events" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    Name: <input type="text" name="name"><br>
+    Date: <input type="date" name="date"><br>
+    Location: <input type="text" name="location"><br>
+    State: <input type="text" name="state"><br>
+    <input type="submit" value="Add Event">
+</form>

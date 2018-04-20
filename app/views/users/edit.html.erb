@@ -1,0 +1,18 @@
+<a href="/events"> Events Dashboard </a> 
+<h1> Edit Your Profile </h1>
+<% if flash[:messages] %>
+    <% flash[:messages].each do |msg| %>
+        <p> <%= msg %> </p>
+    <% end %>
+<% end %>
+
+<form action="/users/<%= @user.id %>" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    First Name: <input type="text" name="user[first_name]"  value="<%= @user.first_name %>" ><br>
+    Last Name: <input type="text" name="user[last_name]" value="<%= @user.last_name %>" ><br>
+    Email: <input type="text" name="user[email]" value="<%= @user.email %>" ><br>
+    Location: <input type="text" name="user[location]" value="<%= @user.location %>" ><br>
+    State: <input type="text" name="user[state]" value="<%= @user.state %>" ><br>
+    <input type="submit" value="Update Records">
+</form>

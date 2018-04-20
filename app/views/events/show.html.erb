@@ -1,0 +1,37 @@
+<a href="/events"> Return to Dashboard </a>
+<h1> <%= @event.name %> </h1>
+<p> <%= @event.user.first_name %> <%= @event.user.last_name %> </p>
+<p> <%= @event.date.strftime("%B %d %Y") %> </p>
+<p> <%= @event.location %> </p>
+<p> People who are joining the event: <%= @count %> </p>
+
+<h3> Attendees </h3>
+<table>
+    <tr>
+        <th> Name </th>
+        <th> Location </th>
+        <th> State </th>
+    </tr>
+    <% @guests.each do |person| %>
+    <tr>
+        <td> <%= person.first_name %> </td>
+        <td> <%= person.location %> </td>
+        <td> <%= person.state %> </td>
+    </tr>
+    <% end %>
+</table>
+
+<h3> Discussions about this event </h3>
+<div id="comment_box">
+<% @comments.each do |comment| %>
+    <p> <%= comment.first_name %> says: <%= comment.content %> </p>
+    _______________
+<% end %>
+</div>
+<div id="add_comment">
+<form action="/comments/<%= @event.id %>" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="text" name="content"><br>
+    <input type="submit" value="Submit Comment">
+</form>
+</div>
